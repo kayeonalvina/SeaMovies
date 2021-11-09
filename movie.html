@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <script
+            src="https://kit.fontawesome.com/6478f529f2.js"
+            crossorigin="anonymous"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@300&family=Righteous&display=swap"
+          rel="stylesheet">
+
+    <title>SeaMovies</title>
+
+  <style>
+
+      * {
+          font-family: 'Hahmlet', serif;
+      }
+
+      .navbar-brand {
+          font-size: 30px;
+          font-family: 'Righteous', cursive;
+      }
+
+      img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+      }
+
+      .image-box {
+          width: 385px;
+          height: 550px;
+          /*border: 5px solid red;*/
+      }
+
+      .image-text {
+          margin: 100px auto 70px 125px;
+          /*background-color: greenyellow;*/
+          display: flex;
+          /*align-items: center;*/
+          justify-content: left;
+      }
+
+      .text {
+          padding-top: 20px;
+          padding-left: 40px;
+      }
+
+      .movie-title, .star, .like {
+          margin-left: 40px;
+          padding-bottom: 10px;
+      }
+
+      .star, .like {
+          margin-bottom: 30px;
+      }
+
+      ul {
+          list-style-type: none;
+      }
+
+      li span {
+          margin-top: 10px;
+          /*background-color: green;*/
+          display: inline-block;
+          height: 70px;
+          overflow-y: hidden;
+          font-size: 25px;
+      }
+
+      .movie-label {
+          width: 100px;
+      }
+
+      .movie-answer {
+          width: 1100px;
+          padding-right: 30px;
+      }
+
+      .synopsis-label {
+          margin-left: 125px;
+          margin-bottom: 30px;
+      }
+
+      .synopsis {
+          margin-left: 125px;
+          width: 1660px;
+          font-size: 25px;
+      }
+
+      .comment-label {
+          margin: 125px auto 30px 125px;
+      }
+
+      .form-control {
+          margin-left: 125px;
+      }
+
+      .input-group-append {
+          margin-right: 125px;
+      }
+
+      .comment-box {
+          border: 2px solid black;
+          margin: 30px 125px 50px 125px;
+          height: 500px;
+          overflow-y: auto;
+      }
+
+      .written-comment {
+          border-bottom: 1px solid black;
+          padding: 20px;
+      }
+
+  </style>
+
+    <script>
+        $(document).ready(function () {
+            showReview()
+        });
+
+        function like(name) {
+            $.ajax({
+                type: 'POST',
+                url: '/like',
+                data: {name_give: name},
+                success: function (response) {
+                    alert(response['msg']);
+                    window.location.reload()
+                }
+            });
+        }
+
+        function write_comment(name) {
+            let comment = $('#comment-input').val()
+
+            $.ajax({
+                type: "POST",
+                url: "/comment",
+                data: {comment_give: comment, name_give: name},
+                success: function (response) {
+                    alert(response["msg"]);
+                    window.location.reload();
+                }
+            })
+        }
+
+        function showReview() {
+            $.ajax({
+                type: "GET",
+                url: "/comment?title={{title}}",
+                data: {},
+                success: function (response) {
+                    let comments = response['all_comments']
+
+                    for (let i = 0; i < comments.length; i++) {
+                        let comment = comments[i]['comment']
+
+                        let temp_html = `<div class="written-comment">
+                                            <p>${comment}</p>
+                                        </div>`
+
+                        $('#comment-output').append(temp_html)
+                    }
+                }
+            })
+        }
+
+    </script>
+
+</head>
+<body style="background-color: whitesmoke">
+
+    <!-- HEADER-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">SeaMovies</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="/list?type=상영/예정작">상영/예정작<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        브라우저
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/list?type=조회순">조회순</a>
+                        <a class="dropdown-item" href="/list?type=평점순">평점순</a>
+                        <a class="dropdown-item" href="/list?type=좋아요순">좋아요순</a>
+                    </div>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0" action="/search" method="post">
+                <input id="search-input" name="search-input" class="form-control mr-sm-2" type="search" placeholder="영화 이름을 검색하세요"
+                       aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">검색</button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="image-text">
+        <!--  image-->
+        <div class="image-box">
+            <img src="{{image}}">
+        </div>
+        <div class="text">
+            <a href="{{pageurl}}">
+                <h1 id="name" class="movie-title" style="color: black; font-weight: bold">{{title}}</h1>
+            </a>
+
+            <p class="star" style="color: goldenrod; font-size: 20px"><i class="fas fa-star"></i> {{star}}
+                <a href="#" onclick="like('{{title}}')" class="like" style="color: crimson;"><i class="fas fa-heart"></i> 좋아요: {{like}}
+                    <span class="icon"></span>
+                </a>
+            </p>
+
+            <!--label과 답-->
+            <ul>
+                <li class="movie-total">
+                    <span class="movie-label">개봉</span>
+                    <span class="movie-answer">{{released}}</span>
+                </li>
+                <li>
+                    <span class="movie-label">장르</span>
+                    <span class="movie-answer">{{genre}}</span>
+                </li>
+                <li>
+                    <span class="movie-label">감독</span>
+                    <span class="movie-answer">{{director}}</span>
+                </li>
+                <li>
+                    <span class="movie-label" style="height: 100px">출연진</span>
+                    <span class="movie-answer" style="height: 100px">{{actors}}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!--줄거리-->
+    <h2 class="synopsis-label">줄거리</h2>
+    <p class="synopsis">{{synopsis}}</p>
+
+    <!--한줄평-->
+    <h2 class="comment-label">한줄평</h2>
+
+    <div class="input-group mb-3">
+        <input id="comment-input" type="text" class="form-control" placeholder="영화를 어떻게 감상하셨나요?" aria-label="Recipient's username"
+               aria-describedby="basic-addon2" style="border-color: slategray; background-color: mintcream">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" onclick="write_comment('{{title}}')">작성</button>
+        </div>
+    </div>
+
+    <div class="comment-box" id="comment-output"></div>
+
+</body>
+</html>

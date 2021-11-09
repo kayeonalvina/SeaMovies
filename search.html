@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@300&family=Righteous&display=swap"
+          rel="stylesheet">
+
+    <title>SeaMovies</title>
+
+  <style>
+
+      * {
+          font-family: 'Hahmlet', serif;
+      }
+
+      .navbar-brand {
+          font-size: 30px;
+          font-family: 'Righteous', cursive;
+      }
+
+      .search-sentence {
+          margin: 50px 0px 50px 80px;
+      }
+
+      .movie-image {
+          padding: 10px;
+      }
+
+      .movie-row {
+          display: flex;
+          flex-wrap: wrap;
+          margin-top: 10px;
+          margin-left: 80px;
+      }
+
+  </style>
+
+</head>
+<body style="background-color: whitesmoke">
+
+  <!-- HEADER-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">SeaMovies</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+
+        <li class="nav-item active">
+          <a class="nav-link" href="/list?type=상영/예정작">상영/예정작<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+             aria-haspopup="true" aria-expanded="false">
+            브라우저
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/list?type=조회순">조회순</a>
+            <a class="dropdown-item" href="/list?type=평점순">평점순</a>
+            <a class="dropdown-item" href="/list?type=좋아요순">좋아요순</a>
+          </div>
+        </li>
+      </ul>
+        <form class="form-inline my-2 my-lg-0" action="/search" method="post">
+            <input id="search-input" name="search-input" class="form-control mr-sm-2" type="search"
+                   placeholder="영화 이름을 검색하세요"
+                   aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">검색</button>
+        </form>
+    </div>
+  </nav>
+
+  <h2 class="search-sentence">'{{title}}'에 대한 검색 결과입니다</h2>
+
+  <!--  card-->
+  <div class="movie-row">
+      <a href="/movie?title={{title}}" class="movie-image">
+          <img src="{{image}}">
+      </a>
+  </div>
+
+</body>
+</html>
